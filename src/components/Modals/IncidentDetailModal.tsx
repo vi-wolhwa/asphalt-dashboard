@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelectedIncident } from '../../contexts/SelectedIncidentContext';
+import { useImageWithHeaders } from '../../hooks/useImageWithHeaders';
 import RepairManageModal from './RepairManageModal';
 import styles from './IncidentDetailModal.module.scss';
 
@@ -33,6 +34,8 @@ const SKELETON_LABELS = ['주소', '위험도', '크기', '최초 확인 시각'
 export default function IncidentDetailModal() {
   const { selectedId, setSelectedId, detail, loading, error } = useSelectedIncident();
   const [repairOpen, setRepairOpen] = useState(false);
+
+  const { blobUrl: photoSrc, loading: photoLoading, error: photoError } = useImageWithHeaders(detail?.photo_url);
 
   if (!selectedId) return null;
 
@@ -118,20 +121,25 @@ export default function IncidentDetailModal() {
 
               {/* 사진 440×440 */}
               <div className={styles.photoWrap}>
-                <img
-                  src={detail.photo_url}
-                  alt={`포트홀 ${detail.incident_id} 사진`}
-                  className={styles.photo}
-                  width={440}
-                  height={440}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      'data:image/svg+xml;charset=utf-8,' +
-                      encodeURIComponent(
-                        '<svg xmlns="http://www.w3.org/2000/svg" width="440" height="440" fill="%23ffffff"><rect width="440" height="440"/><text x="220" y="225" text-anchor="middle" fill="%239ca3af" font-size="14">이미지를 불러올 수 없습니다</text></svg>',
-                      );
-                  }}
-                />
+                {photoLoading && (
+                  <div className={styles.photoPlaceholder}>
+                    <span className={styles.photoSpinner} />
+                  </div>
+                )}
+                {photoError && !photoLoading && (
+                  <div className={styles.photoPlaceholder}>
+                    <span className={styles.photoErrorText}>이미지를 불러올 수 없습니다</span>
+                  </div>
+                )}
+                {photoSrc && !photoLoading && !photoError && (
+                  <img
+                    src={photoSrc}
+                    alt={`포트홀 ${detail.incident_id} 사진`}
+                    className={styles.photo}
+                    width={440}
+                    height={440}
+                  />
+                )}
                 <span
                   className={styles.statusBadge}
                   style={{
