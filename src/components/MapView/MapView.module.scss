@@ -3,6 +3,7 @@
 .container {
   flex: 1;
   min-width: $map-min-width;
+  min-height: 0; /* flex 자식 shrink 허용 */
   position: relative;
   background: $color-surface;
   border-radius: $radius-md;

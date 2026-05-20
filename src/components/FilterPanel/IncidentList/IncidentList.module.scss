@@ -6,13 +6,14 @@
   flex-direction: column;
   gap: 8px;
   flex: 1;
-  min-height: 0;
+  min-height: 0; /* flex 자식이 shrink 가능하도록 — 스크롤 핵심 */
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .listTitle {
@@ -29,6 +30,7 @@
 /* ── 테이블 스크롤 컨테이너 ── */
 .tableWrap {
   flex: 1;
+  min-height: 0; /* overflow-y: auto 작동 핵심 */
   overflow-y: auto;
   border: 1px solid $color-border;
   border-radius: 6px;
@@ -139,7 +141,7 @@
   white-space: nowrap;
 }
 
-/* ── 주소 셀 (전체 표시, 줄바꿈 허용) ── */
+/* ── 주소 셀 ── */
 .address {
   word-break: keep-all;
   line-height: 1.4;

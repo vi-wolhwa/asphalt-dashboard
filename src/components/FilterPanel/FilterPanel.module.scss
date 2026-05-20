@@ -10,7 +10,8 @@
   background: $color-surface;
   border-radius: $radius-md;
   box-shadow: $shadow-card;
-  overflow: hidden; /* 패널 자체는 넘치지 않고 내부에서 스크롤 */
+  overflow: hidden;
+  min-height: 0; /* flex 자식이 shrink 가능하도록 */
 }
 
 .title {

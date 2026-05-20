@@ -3,7 +3,8 @@
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100%; /* #root의 100% = viewport 높이 */
+  min-height: 700px;
   padding: $page-padding;
   gap: $content-gap;
 }
@@ -13,5 +14,5 @@
   flex-direction: row;
   gap: $content-gap;
   flex: 1;
-  min-height: $map-min-height;
+  min-height: 0; /* 자식이 shrink 가능하도록 — 핵심 */
 }
